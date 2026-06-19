@@ -1,0 +1,215 @@
+.pdf-viewer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--paper-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* Toolbar */
+.pdf-viewer__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--paper);
+  flex-shrink: 0;
+}
+
+.pdf-viewer__nav,
+.pdf-viewer__zoom {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pdf-viewer__btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+  transition: background 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+
+.pdf-viewer__btn:hover:not(:disabled) {
+  background: var(--paper-deep);
+  color: var(--ink);
+}
+
+.pdf-viewer__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.pdf-viewer__counter,
+.pdf-viewer__zoom-value {
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  color: var(--ink-muted);
+  min-width: 56px;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.pdf-viewer__zoom-value {
+  min-width: 44px;
+}
+
+/* Canvas — scrollable area que contiene la pagina */
+.pdf-viewer__canvas {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--space-4);
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--paper-deep) 0,
+      var(--paper-deep) 1px,
+      transparent 1px,
+      transparent 12px
+    ),
+    var(--paper);
+  display: flex;
+  justify-content: center;
+}
+
+/* react-pdf renderea estos contenedores; los re-estilizamos */
+.pdf-viewer__canvas .react-pdf__Document {
+  display: flex;
+  justify-content: center;
+  height: fit-content;
+}
+
+.pdf-viewer__canvas .react-pdf__Page {
+  box-shadow: 0 6px 24px rgba(26, 24, 20, 0.12), 0 2px 6px rgba(26, 24, 20, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+  background: white;
+}
+
+.pdf-viewer__canvas .react-pdf__Page__canvas {
+  display: block;
+  max-width: 100%;
+  height: auto !important;
+}
+
+.pdf-viewer__canvas .react-pdf__Page__textContent {
+  user-select: text;
+}
+
+/* Loading / error */
+.pdf-viewer__loading,
+.pdf-viewer__error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-7);
+  color: var(--ink-muted);
+  font-size: 13px;
+}
+
+.pdf-viewer__error {
+  color: var(--danger);
+}
+
+.pdf-viewer__spinner {
+  animation: pdf-spin 0.8s linear infinite;
+  color: var(--accent);
+}
+
+@keyframes pdf-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   Resaltados sobre la capa de texto del PDF
+   La capa de texto de pdfjs es transparente y flota sobre el
+   canvas; el <mark> pinta un fondo translucido (highlighter).
+   ========================================================= */
+.pdf-viewer__canvas .pdf-hl {
+  /* CLAVE: el <mark> del navegador trae color negro, que pisa el color
+     transparente de la capa de texto y hace aparecer el texto "doble".
+     Lo forzamos transparente: solo se ve el fondo del resaltado. */
+  color: transparent;
+  border-radius: 2px;
+  cursor: help;
+  /* multiply deja ver el texto del canvas debajo del color */
+  mix-blend-mode: multiply;
+  transition: filter 0.12s ease;
+}
+
+.pdf-viewer__canvas .pdf-hl--clause {
+  background: rgba(45, 74, 62, 0.30); /* accent */
+}
+
+.pdf-viewer__canvas .pdf-hl--concern {
+  background: rgba(184, 92, 60, 0.38); /* ambar/rojizo de aviso */
+}
+
+.pdf-viewer__canvas .pdf-hl:hover {
+  filter: brightness(0.9);
+}
+
+/* Tooltip flotante con el texto del analisis */
+.pdf-tooltip {
+  position: fixed;
+  z-index: 60;
+  max-width: 320px;
+  transform: translateY(-100%) translateY(-10px);
+  background: var(--ink);
+  color: var(--paper-light);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 28px rgba(26, 24, 20, 0.28);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+  animation: pdf-tooltip-in 0.12s ease;
+}
+
+.pdf-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  bottom: -5px;
+  width: 10px;
+  height: 10px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+
+.pdf-tooltip__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pdf-tooltip--clause .pdf-tooltip__label {
+  color: #9ec8b4;
+}
+
+.pdf-tooltip--concern .pdf-tooltip__label {
+  color: #f0b49a;
+}
+
+.pdf-tooltip__text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--paper);
+}
+
+@keyframes pdf-tooltip-in {
+  from { opacity: 0; transform: translateY(-100%) translateY(-4px); }
+  to { opacity: 1; transform: translateY(-100%) translateY(-10px); }
+}

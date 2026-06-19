@@ -1,0 +1,120 @@
+.disclaimer {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+/* ---- Cuerpo compartido ---- */
+.disclaimer__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.disclaimer__lead {
+  color: var(--ink-soft);
+}
+
+.disclaimer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.disclaimer__list li {
+  position: relative;
+  padding-left: var(--space-4);
+}
+
+.disclaimer__list li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.disclaimer__list strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.disclaimer__foot {
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+/* ---- Variante completa (pantalla principal) ---- */
+.disclaimer--full {
+  background: var(--paper-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.disclaimer__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.disclaimer__head svg {
+  color: var(--accent);
+}
+
+/* ---- Variante compacta (vista de análisis) ---- */
+.disclaimer--compact {
+  border-top: 1px solid var(--border-soft);
+  padding-top: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.disclaimer__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  list-style: none;
+  color: var(--ink-muted);
+  font-size: 12px;
+  user-select: none;
+}
+
+.disclaimer__summary::-webkit-details-marker {
+  display: none;
+}
+
+.disclaimer__summary svg {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.disclaimer__summary::after {
+  content: '›';
+  margin-left: auto;
+  transition: transform 0.2s ease;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.disclaimer--compact[open] .disclaimer__summary::after {
+  transform: rotate(90deg);
+}
+
+.disclaimer--compact .disclaimer__body {
+  margin-top: var(--space-3);
+}

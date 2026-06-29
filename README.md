@@ -1,5 +1,7 @@
 # ACIA — Análisis de Contratos con IA
 
+Proyecto para materia Ingenieria de Software.
+
 Plataforma *LegalTech* que analiza contratos en PDF (**alquiler**, **compraventa** y **trabajo**)
 y los explica en lenguaje claro, fundamentando cada hallazgo en la normativa argentina y
 resaltándolo sobre el documento original.
